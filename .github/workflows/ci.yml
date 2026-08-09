@@ -1,0 +1,18 @@
+name: CI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  spec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Verify release artifacts
+        run: |
+          grep -q 'MIT License' LICENSE
+          test -f spec/owp-1.0-rc2.md
+          test -f spec/annex-http-1.0-rc2.md
+          node tools/build-requirement-matrix.mjs
+          git diff --exit-code -- REQUIREMENTS.json CONFORMANCE_MATRIX.md
+          grep -q 'Assessment result: \*\*READY' RELEASE_READINESS.md
