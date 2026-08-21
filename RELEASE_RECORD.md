@@ -29,8 +29,13 @@ vulnerability reporting are enabled.
 
 ## Website publication
 
-The release website is deployed from its private Forgejo source repository to
-Cloudflare Pages.
+This section is a historical RC2 publication record. The `.io` URLs below are
+retained exactly as RC2 evidence; the current project/docs home is
+`https://openworkprotocol.org/` and current candidate identifiers use the
+`.org` namespace.
+
+The RC2 release website was deployed from its private Forgejo source repository
+to Cloudflare Pages.
 
 - Canonical URL: `https://openworkprotocol.io/`
 - Pages endpoint: `https://owpio-web-ed49c385.pages.dev/`
@@ -45,4 +50,4 @@ All runnable examples share the released reference implementation. The release
 therefore establishes reference conformance and domain portability, not
 independent implementation interoperability or production certification.
 
-Project contact: `info@openworkprotocol.io`
+Historical RC2 project contact: `info@openworkprotocol.io`

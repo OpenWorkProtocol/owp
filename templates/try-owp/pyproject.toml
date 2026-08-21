@@ -1,0 +1,20 @@
+[project]
+name = "owp-field-lab"
+version = "0.1.0"
+description = "Public end-to-end Open Work Protocol field lab for real PR and idea work"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+
+[project.scripts]
+owp-field-lab = "owp_field_lab.server:main"
+owp-field-lab-admin = "owp_field_lab.admin:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["owp_field_lab"]
+
+[tool.setuptools.package-data]
+owp_field_lab = ["static/*.html", "static/*.css", "static/*.js"]

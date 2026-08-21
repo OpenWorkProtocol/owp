@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Open Work Protocol Field Lab privacy and data-use notice.">
+  <title>Privacy — OWP Field Lab</title><link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="shell">
+    <nav class="nav"><a class="brand" href="/"><span class="mark">OWP</span><span>Open Work Protocol</span></a><div class="nav-links"><a href="/">Back to field lab</a></div></nav>
+    <main class="how" style="max-width:900px">
+      <span class="kicker">PRIVACY + DATA USE</span>
+      <h1 style="font-size:clamp(48px,8vw,90px);line-height:.95;letter-spacing:-.06em">Work-item data is not published by default.</h1>
+      <p class="lede">The OWP Field Lab retains the data needed to operate the work lifecycle and evaluate the experiment. It does not require payment credentials or a public queue.</p>
+      <div class="how-list">
+        <article><b>1</b><div><h3>What is collected</h3><p>Every submission includes the requested outcome, exact USD value signal, lifecycle decisions, evidence links and a one-way hash of the private customer token. PR work also stores public GitHub PR metadata and snapshots. Idea work stores the idea title and optional HTTPS context URL.</p></div></article>
+        <article><b>2</b><div><h3>What is public</h3><p>Aggregate queue capacity and generic protocol/service information. Individual work items, value signals and requested outcomes are not exposed through the public queue surface.</p></div></article>
+        <article><b>3</b><div><h3>How data may be used</h3><p>Source metadata, requested outcomes, value signals and lifecycle results may be retained and analyzed to evaluate and improve this field lab, OWP workflows and __OWP_OPERATOR_NAME__'s operating process. The service does not automatically publish the collected data as a public dataset.</p></div></article>
+        <article><b>4</b><div><h3>Tracking link</h3><p>The claim token is returned once in the URL fragment and stored by the service only as a SHA-256 hash. Anyone with the complete tracking link can act as that customer, so treat it like a password.</p></div></article>
+        <article><b>5</b><div><h3>Abuse protection</h3><p>The server keeps a short-lived in-memory client address key to limit submission attempts. It is not written to the work database or included in exports.</p></div></article>
+        <article><b>6</b><div><h3>Handoff</h3><p>Portable handoff exports intentionally omit the customer token and stored token hash. Before any public release of collected field data, the operator should review aggregation, redaction and anonymization for that release.</p></div></article>
+      </div>
+    </main>
+    <footer><div><strong>OWP Field Lab</strong><span>Make the work portable.</span></div><div><a href="/">Return to intake</a></div></footer>
+  </div>
+</body>
+</html>

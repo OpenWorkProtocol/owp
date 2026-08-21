@@ -1,0 +1,1 @@
+document.querySelectorAll('[data-menu]').forEach((button)=>{button.addEventListener('click',()=>{const panel=document.querySelector('[data-mobile]');const open=panel.classList.toggle('open');button.setAttribute('aria-expanded',String(open));});});

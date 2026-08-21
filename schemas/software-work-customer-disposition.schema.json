@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openworkprotocol.org/schema/software-work-customer-disposition/v1",
+  "title": "OWP Software Work Customer Disposition v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "work_ref",
+    "attempt_id",
+    "validator_attestation_digest",
+    "decision",
+    "feedback"
+  ],
+  "properties": {
+    "work_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "attempt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "validator_attestation_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "decision": {
+      "enum": [
+        "APPROVE",
+        "STEER",
+        "REJECT"
+      ]
+    },
+    "feedback": {
+      "type": "object"
+    }
+  }
+}

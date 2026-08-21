@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openworkprotocol.org/schema/software-work-attempt-acceptance/v1",
+  "title": "OWP Software Work Attempt Acceptance v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "execution_commitment_digest",
+    "acknowledgements"
+  ],
+  "properties": {
+    "execution_commitment_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "acknowledgements": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "role",
+          "actor_id",
+          "decision",
+          "execution_commitment_digest"
+        ],
+        "properties": {
+          "role": {
+            "enum": [
+              "customer",
+              "provider",
+              "orchestrator",
+              "owp_validator"
+            ]
+          },
+          "actor_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "decision": {
+            "const": "ACCEPT"
+          },
+          "execution_commitment_digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        }
+      }
+    }
+  }
+}
