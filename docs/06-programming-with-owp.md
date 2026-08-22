@@ -116,3 +116,15 @@ node conformance/run.ts https://surface.example \
 Each result identifies the applicable specification section. Unit tests remain
 necessary for implementation correctness but do not replace wire-level
 conformance evidence.
+
+
+## Software work and Try OWP
+
+Deployments handling untrusted software should read
+`../spec/annex-software-work-integrity-1.0-rc3.md` before treating delivery
+evidence as valid. Provider-reported SHAs, branch tips, and `PASS` strings are
+claims until a validator independently proves the exact Attempt-bound result.
+
+The public experiment at `https://try.openworkprotocol.org/` is useful for
+observing live lifecycle behavior, but it is not a replacement
+for the conformance suite or Software Work Integrity validator.

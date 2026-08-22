@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openworkprotocol.org/schema/software-work-agreement/v1",
+  "title": "OWP Software Work Agreement v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_body",
+    "contract_digest",
+    "acknowledgements"
+  ],
+  "properties": {
+    "contract_body": {
+      "type": "object",
+      "required": [
+        "profile",
+        "work_ref",
+        "outcome",
+        "definition_of_done",
+        "scope",
+        "evidence_policy"
+      ],
+      "properties": {
+        "profile": {
+          "const": "https://openworkprotocol.org/profiles/software-work-integrity/v1"
+        },
+        "work_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "outcome": {
+          "type": "string",
+          "minLength": 1
+        },
+        "definition_of_done": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "tier",
+              "statement"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "tier": {
+                "enum": [
+                  "deterministic",
+                  "evidence",
+                  "human"
+                ]
+              },
+              "statement": {
+                "type": "string",
+                "minLength": 1
+              },
+              "command": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "scope": {
+          "type": "object",
+          "properties": {
+            "allowed_paths": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "forbidden_paths": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": true
+        },
+        "evidence_policy": {
+          "type": "object",
+          "required": [
+            "independent_validation",
+            "fresh_environment",
+            "require_exact_result_subject"
+          ],
+          "properties": {
+            "independent_validation": {
+              "type": "boolean"
+            },
+            "fresh_environment": {
+              "type": "boolean"
+            },
+            "require_exact_result_subject": {
+              "type": "boolean"
+            },
+            "require_diff_review": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "contract_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "acknowledgements": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "required": [
+          "role",
+          "actor_id",
+          "decision",
+          "contract_digest"
+        ],
+        "properties": {
+          "role": {
+            "enum": [
+              "customer",
+              "provider",
+              "orchestrator",
+              "owp_validator"
+            ]
+          },
+          "actor_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "decision": {
+            "const": "ACCEPT"
+          },
+          "contract_digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

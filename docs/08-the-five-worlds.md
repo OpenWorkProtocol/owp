@@ -50,3 +50,11 @@ Each repository contains:
 
 Validation commands and aggregate results are recorded in
 [`RELEASE_READINESS.md`](../RELEASE_READINESS.md).
+
+
+## Field Lab is evidence, not a sixth normative world
+
+Try OWP at `https://try.openworkprotocol.org/` is a live deployment experiment.
+Its observations may motivate protocol changes, but Field Lab-specific queueing,
+value-signal, operator, hosting, or UI behavior remains deployment vocabulary
+unless it independently clears the protocol-change bar.

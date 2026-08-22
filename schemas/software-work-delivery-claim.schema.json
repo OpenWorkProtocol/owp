@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openworkprotocol.org/schema/software-work-delivery-claim/v1",
+  "title": "OWP Software Work Delivery Claim v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "work_ref",
+    "attempt_id",
+    "contract_digest",
+    "execution_commitment_digest",
+    "provider_id",
+    "repository_uri",
+    "claimed_base_commit",
+    "result_commit",
+    "result_tree",
+    "diff_digest",
+    "evidence_refs"
+  ],
+  "properties": {
+    "work_ref": {
+      "type": "string"
+    },
+    "attempt_id": {
+      "type": "string"
+    },
+    "contract_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "execution_commitment_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "provider_id": {
+      "type": "string"
+    },
+    "repository_uri": {
+      "type": "string"
+    },
+    "claimed_base_commit": {
+      "type": "string",
+      "minLength": 40,
+      "maxLength": 64
+    },
+    "result_commit": {
+      "type": "string",
+      "minLength": 40,
+      "maxLength": 64
+    },
+    "result_tree": {
+      "type": "string",
+      "minLength": 40,
+      "maxLength": 64
+    },
+    "diff_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "evidence_refs": {
+      "type": "array"
+    }
+  }
+}

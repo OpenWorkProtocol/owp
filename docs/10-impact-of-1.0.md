@@ -1,12 +1,33 @@
-# Migration to Open Work Protocol 1.0-rc2
+# Migration to Open Work Protocol 1.0-rc3
 
 This document identifies compatibility changes and required migration actions
 for implementations built against OWP 0.3 or 1.0-rc1.
 
+## RC2 to RC3
+
+The RC3 core lifecycle and HTTP verb semantics remain compatible with RC2. The
+new Software Work Integrity Profile is optional and additive: a surface that
+does not advertise it remains a core-only deployment.
+
+A deployment that adopts the profile must add participating client/validator
+behavior rather than Git logic to the surface:
+
+| Area | RC3 profile requirement | Migration action |
+|---|---|---|
+| Definition of Done | Four roles accept one contract digest before execution. | Add agreement artifact and role acknowledgements. |
+| Attempt input | Exact repository, object format, base commit and base tree are immutable per Attempt. | Resolve moving refs before execution and hash an execution commitment. |
+| Provider output | Delivery data is a claim. | Stop treating provider `PASS`, branch, PR, or SHA narration as validation. |
+| Validation | Independent validator reconstructs exact base/result/tree/diff and effective acceptance criteria. | Add isolated validator workflow and exact-subject evidence. |
+| STEER/handoff | New Attempt starts from prior validator-attested result. | Chain parent attestation + customer disposition into the new execution commitment. |
+| Evidence | Deterministic tests identify the exact result commit/tree. | Emit/accept in-toto-compatible test result statements. |
+
+RC2 clients that do not select this profile do not need to understand the new
+link vocabulary. Surfaces continue to round-trip unknown envelope values.
+
 ## Version compatibility
 
-OWP 1.0-rc2 supersedes 1.0-rc1 and is not wire-compatible with it. A conforming
-RC2 surface reports `1.0-rc2`. A request pinned to RC1 receives
+OWP 1.0-rc3 is the current development candidate. A core surface may continue
+to implement and advertise RC2 until upgraded. A conforming RC3 surface reports `1.0-rc3`. A request pinned to RC1 receives
 `UNSUPPORTED_VERSION` unless the deployment separately implements the RC1
 contract.
 
@@ -53,7 +74,19 @@ grant for item reads.
 
 ## Validation
 
-After migration, regenerate implementation types from the RC2 schema, run the
+After migration, regenerate implementation types from the applicable RC3 schema/profile, run the
 implementation test suite, and run the wire conformance suite with distinct
 operator and agent credentials. A deployment must advertise only the protocol
 revisions it implements.
+
+
+## RC3 optional Software Work Integrity adoption
+
+An RC2 implementation may continue to implement the core/HTTP lifecycle without
+selecting the RC3 Software Work Integrity Profile. A deployment that does select
+the profile must add the Work Agreement, four-role contract/Attempt acceptance,
+Attempt-specific source commitment, Delivery Claim, independent Validator
+Attestation, exact-result evidence binding, and validator-attested revision/handoff
+rules defined by Annex B.
+
+The Try OWP Field Lab is not evidence that this migration is complete.

@@ -71,3 +71,11 @@ Additive optional behavior is discoverable through `surface.describe`.
 Breaking verb, state, error, or invariant changes require a major protocol
 revision. Renamed fields remain available under the deprecated name for at
 least the compatibility period stated by the specification.
+
+
+## Field-lab evidence
+
+Evidence from `https://try.openworkprotocol.org/` is useful input because it
+exercises live work items and operator/customer decisions. It is not privileged
+above evidence from unrelated deployments, and a Field Lab convenience does not
+become normative merely because the project itself deployed it.

@@ -1,13 +1,33 @@
 #!/usr/bin/env node
 import { readFileSync, writeFileSync } from 'node:fs';
-import { basename, resolve } from 'node:path';
+import { basename, dirname, normalize, resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
-const sources = ['spec/owp-1.0-rc2.md', 'spec/annex-http-1.0-rc2.md'];
+const sources = ['spec/owp-1.0-rc3.md', 'spec/annex-http-1.0-rc3.md', 'spec/annex-software-work-integrity-1.0-rc3.md'];
 const keyword = /\b(MUST NOT|SHOULD NOT|MUST|SHOULD|MAY)\b/g;
 
 function evidenceFor(file, section, text, modality) {
   const annex = file.includes('annex-http');
+  const integrity = file.includes('annex-software-work-integrity');
+  // RFC 2119 MAY is permission, not an implementation obligation. Keep this
+  // classification ahead of profile-specific executable evidence so the matrix
+  // never over-claims conformance for optional behavior.
+  if (modality === 'MAY') {
+    return {
+      applicability: 'Implementations selecting the optional behavior',
+      evidence: 'Permission recorded in the normative inventory; no implementation is required solely by this MAY.',
+      result: 'N/A (permission)',
+      gap: 'A MAY grants permission and imposes no implementation obligation by itself.',
+    };
+  }
+  if (integrity) {
+    return {
+      applicability: 'Deployments selecting the Software Work Integrity Profile',
+      evidence: 'tools/test-software-work-integrity.mjs; tools/test-software-work-integrity-vectors.mjs; schemas/software-work-*.schema.json; profile prose review.',
+      result: 'PASS',
+      gap: 'Spec-local profile invariants are executable; external independent provider/build-sandbox interoperability remains a release gate.',
+    };
+  }
   if (/TLS|tokens in URLs|tokens.*logs/.test(text)) {
     return {
       applicability: 'Routable token-mode deployments',
@@ -24,18 +44,10 @@ function evidenceFor(file, section, text, modality) {
       gap: 'Backoff is non-applicable until a shipped client adds automatic retry; timeout and replay-key behavior are implemented now.',
     };
   }
-  if (modality === 'MAY') {
-    return {
-      applicability: 'Implementations selecting the optional behavior',
-      evidence: 'Permission recorded in the normative inventory; surface.describe and vocabulary declarations expose optional behavior where required.',
-      result: 'N/A (permission)',
-      gap: 'A MAY grants permission and imposes no implementation obligation by itself.',
-    };
-  }
   if (/compatibility|Frozen|major revision|machine-readable schema|experimental|Deprecation/.test(section + ' ' + text)) {
     return {
       applicability: 'Specification and schema maintainers',
-      evidence: 'RC2 prose/schema diff review; npm run schema; schema/verify.ts; RELEASE_READINESS.md compatibility assessment.',
+      evidence: 'Published RC2 reference evidence plus RC3 prose/compatibility diff review; RELEASE_READINESS.md records the external RC3 implementation gate.',
       result: 'PASS', gap: 'None.',
     };
   }
@@ -102,13 +114,15 @@ for (const source of sources) {
     const heading = /^(#{1,3})\s+(.+)$/.exec(line);
     if (heading) section = heading[2].replace(/[*`]/g, '');
     if (/^(21\.|22\.|Changelog|Open after|Release-candidate finding register)/.test(section)) continue;
-    if (line.includes('are to be interpreted as described')) continue;
+    const context = contextAt(i);
+    // BCP 14 boilerplate names the keywords but does not itself impose five
+    // protocol requirements. Exclude it even when the sentence wraps lines.
+    if (context.includes('are to be interpreted as described')) continue;
     const matches = [...line.matchAll(keyword)];
     for (let occurrence = 0; occurrence < matches.length; occurrence++) {
       const modality = matches[occurrence][1];
-      const idPrefix = source.includes('annex') ? 'HTTP' : 'OWP';
+      const idPrefix = source.includes('annex-software-work-integrity') ? 'SWI' : source.includes('annex-http') ? 'HTTP' : 'OWP';
       const id = `${idPrefix}-L${i + 1}-${modality.replaceAll(' ', '-')}-${occurrence + 1}`;
-      const context = contextAt(i);
       requirements.push({
         id, modality, source, line: i + 1, section, requirement: context,
         ...evidenceFor(source, section, line.trim(), modality),
@@ -119,19 +133,25 @@ for (const source of sources) {
 
 const counts = Object.fromEntries(['MUST', 'MUST NOT', 'SHOULD', 'SHOULD NOT', 'MAY']
   .map(k => [k, requirements.filter(r => r.modality === k).length]));
-writeFileSync(resolve(root, 'REQUIREMENTS.json'), JSON.stringify({ revision: '1.0-rc2', generated: '2026-08-08', counts, requirements }, null, 2) + '\n');
+writeFileSync(resolve(root, 'REQUIREMENTS.json'), JSON.stringify({ revision: '1.0-rc3', generated: '2026-08-21', counts, requirements }, null, 2) + '\n');
 
-const esc = s => String(s).replaceAll('|', '\\|').replaceAll('\n', ' ');
-const rows = requirements.map(r => `| ${r.id} | ${r.modality} | [${esc(r.section)}](${r.source}#L${r.line}) | ${esc(r.requirement)} | ${esc(r.applicability)} | ${esc(r.evidence)} | ${r.result} | ${esc(r.gap)} |`);
+const esc = s => String(s).replaceAll('|', '\|').replaceAll('\n', ' ');
+function matrixRequirement(text, source) {
+  return String(text).replace(/\[([^\]]+)\]\((?!https?:|mailto:|#)([^)#]+)(#[^)]*)?\)/g, (_m,label,target,anchor='') => {
+    const rebased = normalize(`${dirname(source)}/${target}`).replaceAll('\\','/');
+    return `[${label}](${rebased}${anchor})`;
+  });
+}
+const rows = requirements.map(r => `| ${r.id} | ${r.modality} | [${esc(r.section)}](${r.source}#L${r.line}) | ${esc(matrixRequirement(r.requirement,r.source))} | ${esc(r.applicability)} | ${esc(r.evidence)} | ${r.result} | ${esc(r.gap)} |`);
 const out = `# Normative requirement and conformance matrix
 
-Revision: **1.0-rc2**  
-Generated: **2026-08-08** by \`tools/build-requirement-matrix.mjs\`
+Revision: **1.0-rc3**
+Generated: **2026-08-21** by \`tools/build-requirement-matrix.mjs\`
 
 This inventory contains every RFC 2119 keyword occurrence in the normative
-parts of the specification and HTTP annex. Sections 21–22 are historical and
+parts of the core specification, HTTP annex, and selected normative profiles. Sections 21–22 are historical and
 informative and are deliberately excluded. One row is emitted per keyword,
-including multiple obligations on one source line. IDs pin the immutable RC2
+including multiple obligations on one source line. IDs pin the RC3 candidate
 file and line; regenerate and review the diff if normative text changes.
 
 Counts: ${Object.entries(counts).map(([k, v]) => `**${k} ${v}**`).join(' · ')} · **total ${requirements.length}**.

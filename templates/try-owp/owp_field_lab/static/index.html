@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Open Work Protocol Field Lab: submit a work item and follow it through a durable, portable lifecycle.">
+  <title>__OWP_INSTANCE_TITLE__</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="shell">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="/" aria-label="__OWP_INSTANCE_TITLE__ home">
+        <span class="mark">OWP</span><span>Open Work Protocol</span>
+      </a>
+      <div class="nav-links">
+        <a href="#try">Try it</a>
+        <a href="#how">How it works</a>
+        <a href="/privacy">Privacy</a>
+        <a href="__OWP_PROTOCOL_URL__" rel="noopener">Protocol</a>
+      </div>
+    </nav>
+
+    <main>
+      <header class="hero">
+        <div class="eyebrow">OWP FIELD LAB · WORKFLOW EVALUATION · NO PAYMENT</div>
+        <h1>Give the work a durable record<br>across workers and providers.</h1>
+        <p class="lede">Submit an open GitHub pull request or a build idea. __OWP_OPERATOR_NAME__ may accept it, perform the work, ask durable questions, record evidence, and export the current work state for another provider. The customer controls final disposition.</p>
+        <div class="hero-actions">
+          <a class="primary-link" href="#try">Submit work <span>→</span></a>
+          <a class="ghost-link" href="#how">See the lifecycle</a>
+        </div>
+        <div class="hero-strip">
+          <div><span>01</span><strong>Request</strong><small>Real PR or idea</small></div>
+          <div><span>02</span><strong>Decision</strong><small>Accept or pass</small></div>
+          <div><span>03</span><strong>Attempt</strong><small>Work + questions</small></div>
+          <div><span>04</span><strong>Validation</strong><small>Delivery + validation</small></div>
+          <div><span>05</span><strong>Disposition</strong><small>Approve, steer, reject</small></div>
+          <div><span>06</span><strong>Handoff</strong><small>Portable state</small></div>
+        </div>
+      </header>
+
+      <section class="reality-grid" aria-label="Field Lab scope">
+        <article>
+          <span class="kicker">WORKFLOW</span>
+          <h2>Durable work state.</h2>
+          <p>Requests, decisions, attempts, questions, evidence, validation records, customer rulings, persistence and handoff exports all execute against durable state.</p>
+        </article>
+        <article>
+          <span class="kicker">VALUE SIGNAL</span>
+          <h2>Research input, not payment.</h2>
+          <p>You may enter an estimate of the outcome's value to you. It is research input only. No money is collected. No payment, escrow, obligation or priority is created.</p>
+        </article>
+        <article>
+          <span class="kicker">PURPOSE</span>
+          <h2>Portability across workers.</h2>
+          <p>The provider's internal implementation may change while the durable record preserves what was requested, decided, attempted, delivered, and validated.</p>
+        </article>
+      </section>
+
+      <section id="try" class="workbench">
+        <div class="workbench-head">
+          <div>
+            <span class="kicker">FIELD LAB INTAKE</span>
+            <h2>Create a work record.</h2>
+            <p>Queue order is first-in, first-reviewed. Value signal does not buy priority and does not guarantee acceptance.</p>
+          </div>
+          <div class="capacity" aria-live="polite">
+            <div class="capacity-row"><span>Private queue</span><strong id="capacity-count">— / 20</strong></div>
+            <div class="meter"><span id="capacity-fill"></span></div>
+            <div class="capacity-row small"><span id="capacity-status">Checking…</span><span id="live-status"><i></i> live</span></div>
+          </div>
+        </div>
+
+        <form id="submit-form" class="intake-form">
+          <fieldset class="kind-picker">
+            <legend>What are you submitting?</legend>
+            <label><input type="radio" name="work_kind" value="github_pr" checked><span><strong>GitHub PR</strong><small>Existing open pull request</small></span></label>
+            <label><input type="radio" name="work_kind" value="idea"><span><strong>Build idea</strong><small>Something that does not exist yet</small></span></label>
+          </fieldset>
+
+          <div id="pr-fields" class="source-fields">
+            <label>
+              <span>Open GitHub pull request</span>
+              <input id="pr-url" type="url" placeholder="https://github.com/owner/repo/pull/123" autocomplete="url" spellcheck="false">
+              <small>The live PR is verified at intake and refreshed again before work starts.</small>
+            </label>
+          </div>
+
+          <div id="idea-fields" class="source-fields hidden">
+            <label>
+              <span>Idea title</span>
+              <input id="idea-title" type="text" minlength="8" maxlength="160" placeholder="Example: portable CI failure triage agent">
+            </label>
+            <label>
+              <span>Optional context URL</span>
+              <input id="context-url" type="url" placeholder="https://github.com/owner/repo/issues/123" autocomplete="url" spellcheck="false">
+              <small>Specs, issue, repo, design note or other HTTPS context. Leave blank if the request stands alone.</small>
+            </label>
+          </div>
+
+          <div class="form-grid">
+            <label class="value-field">
+              <span>What value would this outcome have to you?</span>
+              <div class="money"><b>$</b><input id="value-usd" inputmode="decimal" required placeholder="250.00"></div>
+              <small>Research signal only. Nothing is charged or owed.</small>
+            </label>
+            <label>
+              <span>Requested outcome</span>
+              <textarea id="outcome" minlength="12" maxlength="4000" required rows="7" placeholder="Describe the finished result, important constraints, and what would make the work unacceptable even if it technically runs."></textarea>
+              <small>Write the result, not instructions for a particular model or agent.</small>
+            </label>
+          </div>
+
+          <label class="attestation">
+            <input id="attested" type="checkbox" required>
+            <span>I am authorized to request this work. I understand that the request, source metadata, value signal and lifecycle outcome may be retained and analyzed to evaluate this field lab. <a href="/privacy">Privacy details</a>.</span>
+          </label>
+
+          <div class="submit-row">
+            <button id="submit-button" type="submit">Create portable work <span>→</span></button>
+            <p id="form-message" class="message" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </section>
+
+      <section id="receipt-panel" class="receipt hidden">
+        <div>
+          <span class="kicker">WORK CREATED</span>
+          <h2 id="receipt-title">Your work is in the system.</h2>
+          <p id="receipt-copy"></p>
+        </div>
+        <div class="secret-card">
+          <strong>Save your private tracking link.</strong>
+          <p>It is the customer key for this work item. The service stores only a one-way hash of the secret.</p>
+          <div class="tracking-row"><input id="tracking-link" readonly><button id="copy-link" type="button">Copy</button></div>
+        </div>
+      </section>
+
+      <section id="work-panel" class="work-thread hidden">
+        <div class="thread-head">
+          <div><span class="kicker">PORTABLE WORK STATE</span><h2 id="work-ref"></h2></div>
+          <div class="thread-badges"><span id="work-state"></span><span id="integrity-state"></span></div>
+        </div>
+        <div class="stage-rail" aria-label="Work lifecycle">
+          <span data-stage="submitted">Requested</span><span data-stage="accepted">Accepted</span><span data-stage="attempt">Attempt</span><span data-stage="validation">Validation</span><span data-stage="decision">Disposition</span>
+        </div>
+        <div id="work-summary" class="summary-grid"></div>
+        <p id="work-message" class="message" role="status" aria-live="polite"></p>
+        <div id="question-box" class="action-box hidden"></div>
+        <div id="disposition-box" class="action-box hidden"></div>
+        <div class="handoff-bar">
+          <div><strong>Portable handoff</strong><span>Download a token-free snapshot another provider can inherit.</span></div>
+          <button id="download-handoff" type="button">Download JSON</button>
+        </div>
+        <div class="timeline-head"><div><span class="kicker">DURABLE HISTORY</span><h3>Hash-linked work events</h3></div><span>SHA-256</span></div>
+        <ol id="timeline" class="timeline"></ol>
+      </section>
+
+      <section id="how" class="how">
+        <div class="how-intro"><span class="kicker">WORKFLOW</span><h2>What this field lab exercises.</h2><p>The field lab follows a request through uncertainty, provider work, evidence, customer disposition, and handoff in one durable record.</p></div>
+        <div class="how-list">
+          <article><b>1</b><div><h3>Request</h3><p>The customer defines an outcome and a source. The field lab records a value signal, not a payment promise.</p></div></article>
+          <article><b>2</b><div><h3>Accept or pass</h3><p>__OWP_OPERATOR_NAME__ makes an explicit provider decision. Passing is a valid terminal result; silence is not.</p></div></article>
+          <article><b>3</b><div><h3>Attempt</h3><p>An accepted item starts a numbered attempt. PR state is refreshed so work begins against explicit current evidence.</p></div></article>
+          <article><b>4</b><div><h3>Questions become durable decisions</h3><p>If a decision is needed, the customer sees options and evidence in the work thread. Their answer becomes part of the inherited state.</p></div></article>
+          <article><b>5</b><div><h3>Delivery and validation</h3><p>The result is recorded with HTTPS evidence, then a separately named validation actor records valid or invalid with evidence.</p></div></article>
+          <article><b>6</b><div><h3>Customer disposition</h3><p>Approve closes the work. Steer creates another attempt. Reject closes it. The customer can export the entire portable state at any point.</p></div></article>
+        </div>
+      </section>
+
+      <section class="boundary">
+        <span class="kicker">PROTOCOL BOUNDARY</span>
+        <h2>Provider internals remain outside the portable boundary.</h2>
+        <p>__OWP_OPERATOR_NAME__ may use any agent runtime, orchestration system, human workflow, or combination. Those choices remain provider-internal; the shared boundary is the work record.</p>
+        <div class="boundary-diagram"><span>Customer</span><i>→</i><strong>Portable work</strong><i>↔</i><span>__OWP_OPERATOR_NAME__ / agents</span><i>→</i><strong>Evidence</strong><i>→</i><span>Customer or next provider</span></div>
+        <p class="fine">This is a public OWP field-lab profile. It is designed to exercise OWP concepts end to end; it does not claim independent implementation interoperability or full OWP 1.0 conformance.</p>
+      </section>
+    </main>
+
+    <footer>
+      <div><strong>__OWP_INSTANCE_TITLE__</strong><span>Make the work portable.</span></div>
+      <div><a href="/privacy">Privacy</a><a href="/api/owp/describe">Machine-readable surface</a><a href="__OWP_PROTOCOL_URL__" rel="noopener">OWP specification</a></div>
+      <p>Development disclosure: AI-assisted tools contributed to the reference Field Lab. __OWP_OPERATOR_NAME__ is responsible for operating this deployment.</p>
+    </footer>
+  </div>
+  <script src="/app.js" defer></script>
+</body>
+</html>

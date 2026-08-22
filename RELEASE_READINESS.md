@@ -1,120 +1,127 @@
-# Open Work Protocol 1.0-rc2 release readiness
+# Open Work Protocol 1.0-rc3 development readiness
 
-Assessment date: **2026-08-08**
-Release status: **Public release candidate**
-Assessment result: **READY**
+Assessment date: **2026-08-21**
+Release status: **Development candidate; RC2 remains the last published release**
+Assessment result: **READY FOR IMPLEMENTATION REVIEW**
 
-## Release qualification
+## Scope of this assessment
 
-Open Work Protocol 1.0-rc2 is approved for public implementation, evaluation,
-and feedback. The assessment covers the normative specification, HTTP binding,
-reference implementation, conformance suite, and four standalone domain
-examples.
+RC3 preserves the 1.0-rc2 core lifecycle and HTTP binding semantics and adds a
+normative optional **Software Work Integrity Profile**. The profile addresses
+exact-base and untrusted-worker software delivery without making the OWP surface
+Git-aware.
 
-The release designation is limited to a release candidate. It does not
-represent production certification, independently verified interoperability,
-or validation of internet-facing deployments.
+This repository now contains executable spec-local evidence for the new profile.
+It does **not** yet contain upgraded copies of the external `owp-code`, domain
+example, independent provider, or hardened production validator implementations.
+Therefore RC3 is not represented as a published interoperable release.
 
-## Release components
-
-| Repository | Component | Release |
-|---|---|---|
-| `OpenWorkProtocol/owp` | Normative specification, HTTP binding, requirement inventory, conformance matrix, governance, and release evidence | `v1.0-rc2` |
-| `OpenWorkProtocol/owp-code` | Reference surface, schema, CLI, operator console, and wire conformance suite | `v0.1.0` |
-| `OpenWorkProtocol/owp-desk` | Standalone freight back-office example | `v0.1.0` |
-| `OpenWorkProtocol/owp-ops` | Standalone infrastructure operations example | `v0.1.0` |
-| `OpenWorkProtocol/owp-publish` | Standalone editorial workflow example | `v0.1.0` |
-| `OpenWorkProtocol/owp-research` | Standalone research workflow example | `v0.1.0` |
-
-The five runnable repositories use the same reference implementation. Their
-results establish reference conformance and portability across the represented
-domains; they do not establish interoperability between independently authored
-implementations.
-
-## Conformance evidence
+## Spec-local qualification
 
 | Evidence | Result |
 |---|---:|
-| Normative requirement occurrences inventoried and traced | 145/145 |
-| Authenticated HTTP conformance obligations | 50/50 |
-| Reference implementation tests | 94/94 |
-| Freight example tests | 24/24 |
-| Infrastructure example tests | 43/43 |
-| Editorial example tests | 56/56 |
-| Research example tests | 35/35 |
-| Total automated tests | 252/252 |
-| Dependency audits at release | 0 known vulnerabilities |
+| Normative RFC 2119 occurrences inventoried | 256/256 |
+| Static Software Work Integrity vectors | 7/7 |
+| Dynamic adversarial/real-Git profile tests | 21/21 |
+| Requirement/matrix reproducibility | PASS |
+| Profile JSON schemas parse | PASS |
+| Exact Git SHA-1/SHA-256 length policy | PASS |
+| Four-party Definition of Done consensus gate | PASS |
+| Attempt-specific exact source commitment | PASS |
+| Exact-result in-toto test subject binding | PASS |
+| Revision/handoff from validator-attested result only | PASS |
+| Project URL / RC3 namespace consistency | PASS |
+| Static main-site smoke and local-link validation | PASS |
+| Documentation local-link integrity | PASS |
+| Generated Try OWP template smoke | 58/58 |
 
-`REQUIREMENTS.json` and `CONFORMANCE_MATRIX.md` map each normative occurrence
-to its specification location, applicability, evidence, result, and any known
-gap. The matrix is generated from the normative documents and is checked for
-reproducibility in continuous integration.
+## Threats exercised locally
 
-## Standalone verification
+The dynamic suite proves rejection of:
 
-Each runnable repository was installed and tested from a fresh clone without a
-sibling checkout, local package path, pre-existing build output, user database,
-or global package dependency. Verification included installation, dependency
-audit, automated tests, documented initialization, startup, observable HTTP
-responses, repeat initialization, and orderly shutdown.
+- provider-claimed base mismatch;
+- abbreviated Git object ids;
+- actual base-tree mismatch;
+- result-tree substitution;
+- tests run on a different result commit;
+- missing deterministic test evidence;
+- stale/tampered deterministic test evidence digest;
+- incomplete four-party contract consensus;
+- provider self-validation under an independence requirement;
+- split contract-digest acknowledgement;
+- incomplete/split Attempt execution-commitment consensus;
+- delivery bound to the wrong Attempt;
+- paid STEER acceptance delta omitted from validation;
+- deterministic command execution without explicit validator permission;
+- required execution/isolation that the reference verifier cannot honestly provide (classified `INDETERMINATE`);
+- forbidden/out-of-scope changed paths;
+- unrelated result history;
+- revision/handoff starting from something other than the prior
+  validator-attested result;
 
-The domain repositories contain provenance-recorded copies of the reference
-runtime. `vendor/owp-reference/MANIFEST.sha256` identifies the embedded files
-and permits byte-for-byte verification against the released reference source.
+The positive path creates a temporary Git repository, verifies commit/tree
+identity and ancestry, hashes the canonical exact base-to-result change set, fresh-clones the result,
+checks out the exact commit/tree, and runs the deterministic Definition of Done.
 
-## Security and release controls
+## External standards alignment
 
-- Mutation replay protection uses actor-scoped idempotency keys and durable
-  request-result records.
-- HTTP POST operations require JSON and enforce a 1 MiB request-body limit.
-- Loopback browser protections include origin validation, content-type
-  enforcement, cache controls, and content security policy headers.
-- Cancellation, bounded client deadlines, retry guidance, authorization
-  classes, grant scope, and self-verdict restrictions are specified and tested.
-- GitHub Actions dependencies are pinned to full commit identifiers.
-- Protected default branches require successful continuous integration and
-  prohibit force pushes and deletion during normal operation.
-- Secret scanning, push protection, dependency alerts, automated security
-  updates, and private vulnerability reporting are enabled.
+The profile was refreshed against current public specifications on 2026-08-21:
 
-## Known limitations
+- A2A 1.0.0;
+- SLSA 1.2 Source/Build tracks;
+- in-toto Attestation v1.2 and Test Result v0.1 predicate;
+- x402 Protocol v2;
+- AP2 v0.2 public specification;
+- ERC-8004.
 
-| ID | Severity | Limitation | Release impact |
+Informative mapping notes live under `interop/`. External standards remain their
+own source of truth.
+
+## Public surface status
+
+The root website remains the protocol/docs entry point at
+`https://openworkprotocol.org/`. The separate Field Lab at
+`https://try.openworkprotocol.org/` is explicitly labeled as an experiment and
+does not count as independent RC3 conformance or interoperability evidence.
+
+## Remaining release gates
+
+| ID | Severity | Gate | Why it remains |
 |---|---|---|---|
-| L-01 | Medium | No independently authored surface has completed the conformance suite. | Independent interoperability is not an approved release claim. |
-| L-02 | Medium | Routable TLS, reverse-proxy behavior, and external credential lifecycle were not exercised by the standalone test environment. | Internet-facing deployment requires a separate security acceptance process. |
-| L-03 | Low | Release validation used Linux and Node.js 24; Windows, macOS, and long-duration soak testing were not performed. | Cross-platform and soak-test claims are outside the assessed scope. |
-| L-04 | Low | Static bearer tokens are provided as a reference binding rather than a complete identity system. | Deployments may replace the binding and remain responsible for identity lifecycle and secret handling. |
+| RC3-G01 | High | Upgrade `owp-code` and its wire/schema conformance kit to advertise and round-trip the profile vocabulary. | This ZIP contains the spec repository only. |
+| RC3-G02 | High | Run the profile with an independently controlled Git validator against an unrelated provider/orchestrator. | Local tests separate roles logically but execute on one machine. |
+| RC3-G03 | High | Demonstrate a cross-provider STEER/handoff whose second Attempt starts from the first independent validator-attested tree. | Required to prove the central portability claim outside fixtures. |
+| RC3-G04 | Medium | Exercise a hardened disposable build sandbox with untrusted repository inputs and no ambient credentials. | The dependency-free verifier uses a fresh clone but the fixture runner is not a production sandbox. |
+| RC3-G05 | Medium | Add external TCK runs, including at least one independently authored implementation. | Independent interoperability remains unproven. |
+| RC3-G06 | Medium | Validate one A2A 1.0 transport binding and, separately, one payment/authority binding if claimed by a deployment. | Interop docs are informative; no external service is bundled here. |
 
-No known Blocker or High-severity finding remains open. The Medium and
-Low-severity limitations above are bounded release claims rather than
-unresolved conformance failures.
+No remaining gate is hidden behind a `PASS`. RC3 may be pushed for review and
+implementation work now; it MUST NOT be tagged/published as the final 1.0
+release on the strength of this repository alone.
 
-## Reproduction commands
+## Reproduction
 
 ```sh
-# specification repository
 node tools/build-requirement-matrix.mjs
 git diff --exit-code -- REQUIREMENTS.json CONFORMANCE_MATRIX.md
-
-# each runnable repository
-npm ci
-npm audit --audit-level=high
-npm test
-
-# reference implementation additionally
-npm run check
-npm run schema:verify
-node conformance/run.ts http://127.0.0.1:PORT \
-  --operator-token TOKEN --agent-token TOKEN
+node tools/test-software-work-integrity-vectors.mjs
+node tools/test-software-work-integrity.mjs
+node tools/test-project-surface.mjs
+node tools/test-site.mjs
+node tools/test-doc-links.mjs
+node -e 'for (const f of require("fs").readdirSync("schemas")) JSON.parse(require("fs").readFileSync("schemas/"+f,"utf8")); console.log("schemas parse")'
 ```
 
-Repository-specific installation, acceptance, cleanup, and troubleshooting
-commands are documented in each `docs/deploy.md` and summarized in each
-`EVIDENCE.md`.
+## Determination
 
-## Release determination
+**READY FOR IMPLEMENTATION REVIEW.** The new normative profile is internally
+coherent and executable at the spec/reproducibility level. A truthful published
+RC3 interoperability claim waits on the external gates above.
 
-The approved public designation is **Open Work Protocol 1.0-rc2 Release
-Candidate**. The evidence supports public implementation and evaluation of the
-release candidate within the scope and limitations stated above.
+
+## Non-normative try surface
+
+The candidate repository also ships a self-hostable Try OWP field-lab template.
+A rendered instance passes 58 template tests. This remains product/example
+evidence and is not counted as normative RC3 conformance or independent
+interoperability evidence.

@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openworkprotocol.org/schema/software-work-execution-commitment/v1",
+  "title": "OWP Software Work Execution Commitment v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "profile",
+    "work_ref",
+    "attempt_id",
+    "revision",
+    "contract_digest",
+    "provider_id",
+    "orchestrator_id",
+    "source_snapshot",
+    "acceptance_delta",
+    "parent"
+  ],
+  "properties": {
+    "profile": {
+      "const": "https://openworkprotocol.org/profiles/software-work-integrity/v1"
+    },
+    "work_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "attempt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "contract_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "provider_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "orchestrator_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository_uri",
+        "object_format",
+        "base_commit",
+        "base_tree"
+      ],
+      "properties": {
+        "repository_uri": {
+          "type": "string",
+          "minLength": 1
+        },
+        "object_format": {
+          "enum": [
+            "sha1",
+            "sha256"
+          ]
+        },
+        "base_commit": {
+          "type": "string",
+          "minLength": 40,
+          "maxLength": 64
+        },
+        "base_tree": {
+          "type": "string",
+          "minLength": 40,
+          "maxLength": 64
+        }
+      }
+    },
+    "acceptance_delta": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "tier",
+          "statement"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tier": {
+            "enum": [
+              "deterministic",
+              "evidence",
+              "human"
+            ]
+          },
+          "statement": {
+            "type": "string"
+          },
+          "command": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "parent": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "attempt_id",
+            "validator_attestation_digest",
+            "customer_disposition_digest"
+          ],
+          "properties": {
+            "attempt_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "validator_attestation_digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            "customer_disposition_digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

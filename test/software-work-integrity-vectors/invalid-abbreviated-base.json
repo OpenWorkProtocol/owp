@@ -1,0 +1,194 @@
+{
+  "expected_valid": false,
+  "bundle": {
+    "agreement": {
+      "contract_body": {
+        "profile": "https://openworkprotocol.org/profiles/software-work-integrity/v1",
+        "work_ref": "FIX-1",
+        "outcome": "Change one file and prove it.",
+        "definition_of_done": [
+          {
+            "id": "tests",
+            "tier": "deterministic",
+            "statement": "Tests pass.",
+            "command": "node test.js"
+          }
+        ],
+        "scope": {
+          "allowed_paths": [
+            "src/**"
+          ],
+          "forbidden_paths": [
+            ".github/**"
+          ]
+        },
+        "evidence_policy": {
+          "independent_validation": true,
+          "fresh_environment": true,
+          "require_exact_result_subject": true,
+          "require_diff_review": true
+        }
+      },
+      "contract_digest": "sha256:fe5ef7d2ecee06147c69344beeea921befc7437a972963bbf2db27d14ee5c8de",
+      "acknowledgements": [
+        {
+          "role": "customer",
+          "actor_id": "customer:test",
+          "decision": "ACCEPT",
+          "contract_digest": "sha256:fe5ef7d2ecee06147c69344beeea921befc7437a972963bbf2db27d14ee5c8de"
+        },
+        {
+          "role": "provider",
+          "actor_id": "provider:test",
+          "decision": "ACCEPT",
+          "contract_digest": "sha256:fe5ef7d2ecee06147c69344beeea921befc7437a972963bbf2db27d14ee5c8de"
+        },
+        {
+          "role": "orchestrator",
+          "actor_id": "orchestrator:test",
+          "decision": "ACCEPT",
+          "contract_digest": "sha256:fe5ef7d2ecee06147c69344beeea921befc7437a972963bbf2db27d14ee5c8de"
+        },
+        {
+          "role": "owp_validator",
+          "actor_id": "validator:test",
+          "decision": "ACCEPT",
+          "contract_digest": "sha256:fe5ef7d2ecee06147c69344beeea921befc7437a972963bbf2db27d14ee5c8de"
+        }
+      ]
+    },
+    "execution_commitment": {
+      "profile": "https://openworkprotocol.org/profiles/software-work-integrity/v1",
+      "work_ref": "FIX-1",
+      "attempt_id": "attempt-1",
+      "revision": 0,
+      "contract_digest": "sha256:fe5ef7d2ecee06147c69344beeea921befc7437a972963bbf2db27d14ee5c8de",
+      "provider_id": "provider:test",
+      "orchestrator_id": "orchestrator:test",
+      "source_snapshot": {
+        "repository_uri": "https://example.invalid/repo",
+        "object_format": "sha1",
+        "base_commit": "111111111111",
+        "base_tree": "2222222222222222222222222222222222222222"
+      },
+      "acceptance_delta": [],
+      "parent": null
+    },
+    "execution_commitment_digest": "sha256:1841c99108667c505937c632b8d975c9c6d92ae185583d594d963eb88f8fe398",
+    "attempt_acceptance": {
+      "execution_commitment_digest": "sha256:1841c99108667c505937c632b8d975c9c6d92ae185583d594d963eb88f8fe398",
+      "acknowledgements": [
+        {
+          "role": "customer",
+          "actor_id": "customer:test",
+          "decision": "ACCEPT",
+          "execution_commitment_digest": "sha256:1841c99108667c505937c632b8d975c9c6d92ae185583d594d963eb88f8fe398"
+        },
+        {
+          "role": "provider",
+          "actor_id": "provider:test",
+          "decision": "ACCEPT",
+          "execution_commitment_digest": "sha256:1841c99108667c505937c632b8d975c9c6d92ae185583d594d963eb88f8fe398"
+        },
+        {
+          "role": "orchestrator",
+          "actor_id": "orchestrator:test",
+          "decision": "ACCEPT",
+          "execution_commitment_digest": "sha256:1841c99108667c505937c632b8d975c9c6d92ae185583d594d963eb88f8fe398"
+        },
+        {
+          "role": "owp_validator",
+          "actor_id": "validator:test",
+          "decision": "ACCEPT",
+          "execution_commitment_digest": "sha256:1841c99108667c505937c632b8d975c9c6d92ae185583d594d963eb88f8fe398"
+        }
+      ]
+    },
+    "delivery_claim": {
+      "work_ref": "FIX-1",
+      "attempt_id": "attempt-1",
+      "contract_digest": "sha256:fe5ef7d2ecee06147c69344beeea921befc7437a972963bbf2db27d14ee5c8de",
+      "execution_commitment_digest": "sha256:1841c99108667c505937c632b8d975c9c6d92ae185583d594d963eb88f8fe398",
+      "provider_id": "provider:test",
+      "repository_uri": "https://example.invalid/repo",
+      "claimed_base_commit": "1111111111111111111111111111111111111111",
+      "result_commit": "3333333333333333333333333333333333333333",
+      "result_tree": "4444444444444444444444444444444444444444",
+      "diff_digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+      "evidence_refs": []
+    },
+    "validator_attestation": {
+      "_type": "https://in-toto.io/Statement/v1",
+      "subject": [
+        {
+          "name": "repo",
+          "digest": {
+            "gitCommit": "3333333333333333333333333333333333333333",
+            "gitTree": "4444444444444444444444444444444444444444"
+          }
+        }
+      ],
+      "predicateType": "https://openworkprotocol.org/attestation/software-work-validation/v1",
+      "predicate": {
+        "work_ref": "FIX-1",
+        "attempt_id": "attempt-1",
+        "contract_digest": "sha256:fe5ef7d2ecee06147c69344beeea921befc7437a972963bbf2db27d14ee5c8de",
+        "execution_commitment_digest": "sha256:1841c99108667c505937c632b8d975c9c6d92ae185583d594d963eb88f8fe398",
+        "expected_source": {
+          "base_commit": "1111111111111111111111111111111111111111",
+          "base_tree": "2222222222222222222222222222222222222222"
+        },
+        "observed_result": {
+          "result_commit": "3333333333333333333333333333333333333333",
+          "result_tree": "4444444444444444444444444444444444444444"
+        },
+        "delivery_claim_digest": "sha256:71dc2e18011d7fda209dbb693d704c4c7bd75f494e845cd67e32bea8933df909",
+        "validator": "validator:test",
+        "policy_version": "owp-swi-v1",
+        "acceptance_results": [
+          {
+            "id": "tests",
+            "outcome": "PASS",
+            "evidence_digest": "sha256:9d65cfa0c79a39e8087de2394967a49e5a1194a6784742687f0126e444042417"
+          }
+        ],
+        "outcome": "VALID"
+      }
+    },
+    "validator_attestation_digest": "sha256:316bb2b937e3d1048d0970e4edfec2ed154d1df85e11a59850fd5039455c3075",
+    "test_result": {
+      "_type": "https://in-toto.io/Statement/v1",
+      "subject": [
+        {
+          "name": "repo",
+          "digest": {
+            "gitCommit": "3333333333333333333333333333333333333333",
+            "gitTree": "4444444444444444444444444444444444444444"
+          }
+        }
+      ],
+      "predicateType": "https://in-toto.io/attestation/test-result/v0.1",
+      "predicate": {
+        "result": "PASSED",
+        "configuration": [
+          {
+            "name": "node test.js"
+          }
+        ],
+        "passedTests": [
+          "tests"
+        ],
+        "warnedTests": [],
+        "failedTests": []
+      }
+    },
+    "customer_disposition": {
+      "work_ref": "FIX-1",
+      "attempt_id": "attempt-1",
+      "validator_attestation_digest": "sha256:316bb2b937e3d1048d0970e4edfec2ed154d1df85e11a59850fd5039455c3075",
+      "decision": "APPROVE",
+      "feedback": {}
+    },
+    "customer_disposition_digest": "sha256:0a8e1cf7452477dafd4ebc261bcc5ef6a6473d129b106ba52bb8b4b77f4d6989"
+  }
+}
